@@ -78,14 +78,18 @@ export default defineComponent({
 
 <template>
     <div>
-        <h1>In Game</h1>
+        <h1>Oriundos Controller</h1>
         <h2>You are Player {{ playerNumber }}</h2>
+        <hr />
         <h3 v-if="ready">Ready</h3>
+        <h3 v-if="isPlaying">Game is playing</h3>
         <input type="range" min="-1" max="1" step="0.1" :disabled="!isPlaying" v-model="direction">
         <button v-if="!isPlaying" @click="readyHandler">I'm Ready</button>
     </div>
 </template>
 
 <style scoped>
-
+input {
+    width: 100%;
+}
 </style>
