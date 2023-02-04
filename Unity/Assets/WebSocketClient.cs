@@ -28,28 +28,26 @@ public class WebSocketClient : MonoBehaviour
         Invoke("Starter",2f);
     }
 
+    private void SendMessage(string command, float value){
+        PlayerInfo message= new PlayerInfo();
+        message.id = 0;
+        message.command = command;
+        message.value = value;
+        message.type = "UNITY";
+        ws.Send(JsonUtility.ToJson(message));
+    }
+
     void Starter()
     {
         ws = new WebSocket("ws://192.168.1.191:8080");
         ws.Connect();
         Debug.Log("Connecting to server");
 
-        
-        PlayerInfo joinedMessage= new PlayerInfo();
-        joinedMessage.id = 0;
-        joinedMessage.command = "JOINED";
-        joinedMessage.value = 1;
-        joinedMessage.type = "UNITY";
-        ws.Send(JsonUtility.ToJson(joinedMessage));
+
+        SendMessage("JOINED", 1);
         Debug.Log("I have joined");
 
-        PlayerInfo readyMessage = new PlayerInfo();
-        readyMessage.id = 0;
-        readyMessage.command = "READY";
-        readyMessage.value = 1;
-        readyMessage.type = "UNITY";
-
-        ws.Send(JsonUtility.ToJson(readyMessage));
+        SendMessage("READY", 1);
         Debug.Log("I am ready");
 
 
