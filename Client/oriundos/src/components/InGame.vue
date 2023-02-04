@@ -49,8 +49,8 @@ export default defineComponent({
                 command: 'MOVEMENT',
                 direction: this.direction
             }
-            console.log("Sending direction to server", this.direction)
-            this.connection.send(message);
+            console.log("Sending direction to server", message)
+            this.connection.send(JSON.stringify(message));
         }
     }
 })

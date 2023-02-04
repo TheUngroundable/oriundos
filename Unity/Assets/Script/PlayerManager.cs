@@ -11,17 +11,10 @@ public class PlayerManager : MonoBehaviour
    public float direction; // da -1 a 1
   
 
-   private void Update()
-   {
-        if (Input.GetKey("right"))
-        {
-            direction = 1;
-        }
-        else  if(Input.GetKey("left"))
-        {
-            direction = -1 ;
-        }
-   }
+    public void SetDirection(float newDirection){
+        direction = newDirection;
+    }
+
 
     public void AddRoot(RootManager rm)
     {
@@ -38,15 +31,13 @@ public class PlayerManager : MonoBehaviour
 
     public void AddPieceToRoot()
     {
-        foreach (RootManager rm in allRoots)
+        foreach (RootManager rm in allRoots){
             rm.AddPiece(direction);
+        }
     }
 
    public void GetPowerUp(RootManager rm)
    {
         AddRoot(rm);
    }
-
-
-   
 }

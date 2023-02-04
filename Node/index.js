@@ -14,15 +14,19 @@ wss.on('connection', function connection(ws) {
     }
     if(!unityClient){
         unityClient = ws
-        console.log(unityClient)
     }
     CLIENTS.push(ws);
     
     ws.send(JSON.stringify(data))
 
     ws.on('message', (data)=>{
-        console.log(data)
-        unityClient.send(data)
+        const json = JSON.parse(data)
+         const message = {
+            id: json.id,
+            command: json.command,
+            direction: json.direction
+         }
+        unityClient.send(JSON.stringify(message))
     })
 })
 wss.on('listening', () => {
