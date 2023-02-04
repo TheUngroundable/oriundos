@@ -23,14 +23,14 @@ public class PlayerManager : MonoBehaviour
         }
    }
 
-    public void AddRoot()
+    public void AddRoot(RootManager rm)
     {
-        RootManager newRoot = Instantiate(allRoots[0],Vector3.zero,Quaternion.identity,transform);
+        RootManager newRoot = Instantiate(rm,Vector3.zero,Quaternion.identity,transform);
 
         for(int i=1; i<newRoot.transform.childCount; i++)    
                  Destroy(newRoot.transform.GetChild(i).gameObject);
 
-        newRoot.transform.localPosition = allRoots[0].lastPiece.transform.localPosition;
+        newRoot.transform.localPosition = rm.lastPiece.transform.localPosition;
         newRoot = newRoot.GetComponent<RootManager>();
         newRoot.isNegative = true;
         allRoots.Add(newRoot);
@@ -44,7 +44,7 @@ public class PlayerManager : MonoBehaviour
 
    public void GetPowerUp(RootManager rm)
    {
-        AddRoot();
+        AddRoot(rm);
    }
 
 

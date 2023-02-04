@@ -26,6 +26,7 @@ public class RootManager : MonoBehaviour
             
             if(lastPiece.transform.GetSiblingIndex()!=0)
              Destroy(lastPiece.GetComponent<BoxCollider2D>());
+          
             lastPiece = curPiece;
         }
    }
