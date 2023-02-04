@@ -1,13 +1,30 @@
 const WebSocket = require('ws')
-const wss = new WebSocket.Server({ port: 8080 },()=>{
+const wss = new WebSocket.Server({ port: 8080 }, () => {
     console.log('server started')
 })
+
+const CLIENTS = []
+let unityClient = undefined
+
 wss.on('connection', function connection(ws) {
-   ws.on('message', (data) => {
-      console.log('data received \n %o',data)
-      wss.clients.forEach(client => client.send(data));
-   })
+
+    const data = {
+        id: CLIENTS.length,
+        command: "CONNECTION"
+    }
+    if(!unityClient){
+        unityClient = ws
+        console.log(unityClient)
+    }
+    CLIENTS.push(ws);
+    
+    ws.send(JSON.stringify(data))
+
+    ws.on('message', (data)=>{
+        console.log(data)
+        unityClient.send(data)
+    })
 })
-wss.on('listening',()=>{
-   console.log('listening on 8080')
+wss.on('listening', () => {
+    console.log('listening on 8080')
 })
