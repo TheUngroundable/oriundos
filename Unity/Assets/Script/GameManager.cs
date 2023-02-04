@@ -19,13 +19,13 @@ public class GameManager : MonoBehaviour
     {
         if(wsc.isPlaying)
         {
-           
-        }
-
-        foreach(PlayerManager pm in players)
+            foreach(PlayerManager pm in players)
                 pm.AddPieceToRoot();
             
-        cam.AddMovement();
+            cam.AddMovement();
+        }
+
+        
     }
 
 

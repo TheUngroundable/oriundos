@@ -12,7 +12,7 @@ public class PlayerManager : MonoBehaviour
   
 
     public void SetDirection(float newDirection){
-        //direction = newDirection;
+        direction = newDirection;
     }
 
 

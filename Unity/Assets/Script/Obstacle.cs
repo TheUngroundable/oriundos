@@ -9,7 +9,7 @@ public class Obstacle : MonoBehaviour
     private void Start()
     {
          particle = GameObject.Find("Particle");
-         particle.SetActive(false);
+         //particle.SetActive(false);
     }
 
     void OnTriggerEnter2D(Collider2D col)
