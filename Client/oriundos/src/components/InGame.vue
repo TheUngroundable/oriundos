@@ -8,6 +8,8 @@ export default defineComponent({
             connection: undefined,
             playerNumber: 0,
             direction: 0,
+            isPlaying: false,
+            ready: false
         }
     },
     mounted() {
@@ -37,19 +39,37 @@ export default defineComponent({
                         this.playerNumber = message.id
                     }
                     break;
+                case 'STARTED':
+                    this.isPlaying = true
+                    break;
+                case 'STOPPED':
+                    this.isPlaying = false
+                    break;
             }
         },
         onOpen() {
             console.log(event);
             console.log("Successfully connected to the echo websocket server...");
+            this.sendMessage('JOINED', !this.ready)
+        },
+        readyHandler(){
+            this.sendMessage('READY', !this.ready)
+            this.ready = !this.ready
         },
         sendMovementDirection() {
+            if (!this.isPlaying) {
+                return
+            }
+            this.sendMessage('MOVEMENT', this.direction)
+        },
+        sendMessage(command, value){
             const message = {
                 id: this.playerNumber,
-                command: 'MOVEMENT',
-                direction: this.direction
-            }
-            console.log("Sending direction to server", message)
+                command,
+                value,
+                type: "PLAYER"
+            };
+            console.log("Player "+this.playerNumber+" said "+message);
             this.connection.send(JSON.stringify(message));
         }
     }
@@ -59,7 +79,10 @@ export default defineComponent({
 <template>
     <div>
         <h1>In Game</h1>
-        <input type="range" min="-1" max="1" step="0.1" v-model="direction">
+        <h2>You are Player {{ playerNumber }}</h2>
+        <h3 v-if="ready">Ready</h3>
+        <input type="range" min="-1" max="1" step="0.1" :disabled="!isPlaying" v-model="direction">
+        <button v-if="!isPlaying" @click="readyHandler">I'm Ready</button>
     </div>
 </template>
 
