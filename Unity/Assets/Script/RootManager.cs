@@ -31,9 +31,9 @@ public class RootManager : MonoBehaviour
         }
    }
 
-   public void GetPowerUp()
+   public void GetPowerUp(Vector3 pos)
    {
-        transform.parent.GetComponent<PlayerManager>().GetPowerUp(this);
+        transform.parent.GetComponent<PlayerManager>().GetPowerUp(this,pos);
    }
 
     public void GetObstacle()

@@ -12,20 +12,22 @@ public class PlayerManager : MonoBehaviour
   
 
     public void SetDirection(float newDirection){
-        direction = newDirection;
+        //direction = newDirection;
     }
 
 
-    public void AddRoot(RootManager rm)
+    public void AddRoot(RootManager rm , Vector3 pos)
     {
         RootManager newRoot = Instantiate(rm,Vector3.zero,Quaternion.identity,transform);
-
+        
+        
         for(int i=1; i<newRoot.transform.childCount; i++)    
                  Destroy(newRoot.transform.GetChild(i).gameObject);
-
-        newRoot.transform.localPosition = rm.lastPiece.transform.localPosition;
+        
+        newRoot.transform.position = pos;
+       
         newRoot = newRoot.GetComponent<RootManager>();
-        newRoot.isNegative = true;
+        newRoot.isNegative = !newRoot.isNegative;
         allRoots.Add(newRoot);
     }
 
@@ -36,8 +38,20 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-   public void GetPowerUp(RootManager rm)
+   public void GetPowerUp(RootManager rm , Vector3 pos)
    {
-        AddRoot(rm);
+        AddRoot(rm,pos);
+   }
+
+   void Update()
+   {
+        if (Input.GetKey("right"))
+        {
+            direction = 1;
+        }
+       if (Input.GetKey("left"))
+        {
+            direction = -1;
+        }
    }
 }
