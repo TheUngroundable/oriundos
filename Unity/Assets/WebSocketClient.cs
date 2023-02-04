@@ -53,7 +53,7 @@ public class WebSocketClient : MonoBehaviour
         if(player1.GetComponent<PlayerManager>().direction != player1Direction){
             player1.GetComponent<PlayerManager>().SetDirection(player1Direction);
         }
-        if(player1.GetComponent<PlayerManager>().direction != player1Direction){
+        if(player2.GetComponent<PlayerManager>().direction != player2Direction){
             player2.GetComponent<PlayerManager>().SetDirection(player2Direction);
         }
     }
