@@ -7,14 +7,9 @@ public class PlayerManager : MonoBehaviour
 {
    public int PlayerID;
    public int pieces;
-   public GameObject lastPiece;
-   private List<GameObject> allPieces = new List<GameObject>();
+   public List<RootManager> allRoots = new List<RootManager>();
    public float direction; // da -1 a 1
-
-   private void Start()
-   {
-       
-   }
+  
 
    private void Update()
    {
@@ -26,21 +21,30 @@ public class PlayerManager : MonoBehaviour
         {
             direction = -1 ;
         }
-        else
-        {
-             direction = 0 ;
-        }
    }
 
-    
+    public void AddRoot()
+    {
+        RootManager newRoot = Instantiate(allRoots[0],Vector3.zero,Quaternion.identity,transform);
 
-   public void AddPiece()
+        for(int i=1; i<newRoot.transform.childCount; i++)    
+                 Destroy(newRoot.transform.GetChild(i).gameObject);
+
+        newRoot.transform.localPosition = allRoots[0].lastPiece.transform.localPosition;
+        newRoot = newRoot.GetComponent<RootManager>();
+        newRoot.isNegative = true;
+        allRoots.Add(newRoot);
+    }
+
+    public void AddPieceToRoot()
+    {
+        foreach (RootManager rm in allRoots)
+            rm.AddPiece(direction);
+    }
+
+   public void GetPowerUp(RootManager rm)
    {
-        GameObject curPiece = Instantiate(lastPiece,Vector3.zero,Quaternion.identity,transform);
-        allPieces.Add(curPiece);
-        curPiece.transform.localPosition = lastPiece.transform.localPosition + new Vector3(direction,-1,0);
-        pieces++;
-        lastPiece = curPiece;
+        AddRoot();
    }
 
 

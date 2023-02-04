@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     public void AddPieceToPlayer()
     {
         foreach(PlayerManager pm in players)
-            pm.AddPiece();
+            pm.AddPieceToRoot();
         
         cam.AddMovement();
     }
