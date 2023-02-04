@@ -67,10 +67,10 @@ public class WebSocketClient : MonoBehaviour
             if(playerInfo.command.ToString() == "STARTED"){
                 if(playerInfo.value == 1f){
                     isPlaying = true;
-                    Debug.Log("Game has started")
+                    Debug.Log("Game has started");
                 } else if(playerInfo.value == 0f){
                     isPlaying = false;
-                    Debug.Log("Game has stopped")
+                    Debug.Log("Game has stopped");
                 }
             }
         };
