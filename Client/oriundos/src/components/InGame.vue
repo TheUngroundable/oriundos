@@ -59,7 +59,7 @@ export default defineComponent({
 <template>
     <div>
         <h1>In Game</h1>
-        <input type="range" v-model="direction">
+        <input type="range" min="-1" max="1" step="0.1" v-model="direction">
     </div>
 </template>
 
