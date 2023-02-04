@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         InvokeRepeating("AddPieceToPlayer",2,0.1f);
+        InvokeRepeating("SpeedTime",5,5);
     }
 
     public void AddPieceToPlayer()
@@ -17,5 +18,11 @@ public class GameManager : MonoBehaviour
             pm.AddPieceToRoot();
         
         cam.AddMovement();
+    }
+
+
+    public void SpeedTime()
+    {
+         Time.timeScale += 0.1f;
     }
 }

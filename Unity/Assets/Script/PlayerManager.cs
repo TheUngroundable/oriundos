@@ -54,4 +54,12 @@ public class PlayerManager : MonoBehaviour
             direction = -1;
         }
    }
+
+   public void DeleteRoot(RootManager rt)
+   {
+      allRoots.Remove(rt);
+      
+      if(allRoots.Count<=0)
+        Debug.Log(transform.name +"HA PERSO ____"+allRoots.Count);
+   }
 }
