@@ -20,7 +20,10 @@ public class RootManager : MonoBehaviour
         {
             GameObject curPiece = Instantiate(lastPiece,Vector3.zero,Quaternion.identity,transform);
             if(isNegative)
-                direction = -direction*0.5f;
+                direction = -direction*Random.Range(0f,1f);
+            else
+                direction = direction*Random.Range(0f,1f);
+                
             curPiece.transform.localPosition =  lastPiece.transform.localPosition + new Vector3(direction,-1,0);
             pieces++;
             
@@ -39,5 +42,6 @@ public class RootManager : MonoBehaviour
     public void GetObstacle()
    {
         isAlive = false;
+        transform.parent.GetComponent<PlayerManager>().DeleteRoot(this);
    }
 }
