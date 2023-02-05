@@ -50,7 +50,11 @@ public class GameManager : MonoBehaviour
                 if(pm.isAlive){
                     wsc.EndGame();
                     Time.timeScale = 0;
-                    Debug.Log("VINCE SOLO UNOI"+pm.transform.name);      
+                    int score = 0;
+                    Debug.Log("VINCE SOLO UNOI"+pm.transform.name);
+                    foreach(RootManager root in pm.allRoots)
+                        score += root.pieces;
+                    Debug.Log("Ci sono "+score);
                 }
             }
         }
