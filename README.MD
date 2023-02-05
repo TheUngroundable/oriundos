@@ -13,8 +13,8 @@ You MUST have Node.js installed
 Download NVM from this link https://github.com/coreybutler/nvm-windows/releases and once you have downloaded it, open terminal and run
 
 ```bash
-    nvm i 19.6.9
-    nvm use 19.6.9
+    nvm i 19.6.0
+    nvm use 19.6.0
 
     node -v 
 ```
