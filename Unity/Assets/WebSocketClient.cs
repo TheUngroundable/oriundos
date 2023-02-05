@@ -82,7 +82,7 @@ public class WebSocketClient : MonoBehaviour
     }
 
     public void EndGame(){
-        
+        SendMessage("FINISHED", 1)
     }
 
     private void Update()
