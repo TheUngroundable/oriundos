@@ -2,9 +2,8 @@
 import { defineComponent } from 'vue'
 import OriundosWebsocket from '../libs/OriundosWebsocket.ts'
 
-const PROTOCL = "ws://"
-const SERVER_IP = "192.168.1.191"
-const PORT = "8080"
+const SERVER_IP = "ws://192.168.1.191:8080"
+
 export default defineComponent({
     name: 'in-game',
     props: {
@@ -35,7 +34,7 @@ export default defineComponent({
     },
     methods: {
         connect() {
-            this.connection = OriundosWebsocket.createWebsocket(PROTOCOL+SERVER_IP+":"+PORT)
+            this.connection = OriundosWebsocket.createWebsocket(SERVER_IP)
             OriundosWebsocket.connect(this.connection, this.onMessage, this.onOpen)
         },
         onMessage() {

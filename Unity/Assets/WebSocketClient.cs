@@ -26,10 +26,7 @@ public class WebSocketClient : MonoBehaviour
     private string roomNumberLabel = "ROOM CODE: ";
     private int roomNumber;
 
-    private string protocol = "ws://";
-    private string port = "8080";
-
-    private string serverIp = "192.168.1.191";
+    public string serverIp = "ws://192.168.1.191:8080";
 
     public AudioManager audioManager;
     public List<float> playerDirections = new List<float>();
@@ -56,7 +53,7 @@ public class WebSocketClient : MonoBehaviour
 
     void Starter()
     {
-        ws = new WebSocket(protocol+serverIp+":"+port);
+        ws = new WebSocket(serverIp);
         ws.Connect();
         //Debug.Log("Connecting to server");
 
