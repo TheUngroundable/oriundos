@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
     public bool isDebug;
     private int playerAlive;
 
+    private WebSocketClient webSocketClient;
+
     void Start()
     {
         wsc = GameObject.FindObjectOfType<WebSocketClient>();
@@ -40,14 +42,17 @@ public class GameManager : MonoBehaviour
 
     public void CheckLoose()
     {
+
         playerAlive = players.Length;
         playerAlive --;
         if(playerAlive==1)
         {
             foreach(PlayerManager pm in players)
             {
-                if(pm.isAlive)
+                if(pm.isAlive){
+                    webSocketClient.EndGame()
                     Debug.Log("VINCE SOLO UNOI"+pm.transform.name);      
+                }
             }
         }
     }

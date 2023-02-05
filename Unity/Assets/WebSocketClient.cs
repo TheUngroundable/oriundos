@@ -81,6 +81,10 @@ public class WebSocketClient : MonoBehaviour
 
     }
 
+    void EndGame(){
+        
+    }
+
     private void Update()
     {
         if(ws == null)

@@ -15,7 +15,8 @@ export default defineComponent({
             playerNumber: 0,
             direction: 0,
             isPlaying: false,
-            ready: false
+            ready: false,
+            finished: false
         }
     },
     mounted() {
@@ -48,8 +49,9 @@ export default defineComponent({
                 case 'STARTED':
                     this.isPlaying = true
                     break;
-                case 'STOPPED':
+                case 'FINISHED':
                     this.isPlaying = false
+                    this.finished = true
                     break;
             }
         },
@@ -89,7 +91,8 @@ export default defineComponent({
         <h2>You are Player {{ playerNumber }} in room number {{ roomNumber }}</h2>
         <hr />
         <h3 v-if="ready">Ready</h3>
-        <h3 v-if="isPlaying">Game is playing</h3>
+        <h3 v-if="isPlaying && !finished">Game is playing</h3>
+        <h3 v-if="finished">You Suck</h3>
         <input type="range" min="-1" max="1" step="0.1" :disabled="!isPlaying" v-model="direction">
         <button v-if="!isPlaying" @click="readyHandler">I'm Ready</button>
     </div>

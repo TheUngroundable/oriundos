@@ -76,18 +76,31 @@ wss.on('connection', function connection(ws) {
             }
         }
 
-        
+        if(json.command === 'FINISHED'){
+            const room = rooms[json.roomNumber]
+            room.isPlaying = false            
+            const message = {
+                id: json.id,
+                command: json.command,
+                value: json.value,
+                roomNumber: json.roomNumber
+            }
+            const encodedMessage = JSON.stringify(message)
+            rooms[json.roomNumber].players.forEach(player => player.ws.send(encodedMessage))
+        }
 
         if(rooms[json.roomNumber] && rooms[json.roomNumber].numberOfReady == rooms[json.roomNumber].maxPlayers){
+            const room = rooms[json.roomNumber]
             const message = {
                 id: -1,
                 command: 'STARTED',
                 value: 1,
                 roomNumber: json.roomNumber
             }
+            room.isPlaying = true
             const encodedMessage = JSON.stringify(message)
-            rooms[json.roomNumber].players.forEach(player => player.ws.send(encodedMessage))
-            rooms[json.roomNumber].unity.send(encodedMessage)
+            room.players.forEach(player => player.ws.send(encodedMessage))
+            room.unity.send(encodedMessage)
             console.log("Game has started")
         }
     })
