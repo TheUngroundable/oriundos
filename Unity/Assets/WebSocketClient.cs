@@ -81,7 +81,7 @@ public class WebSocketClient : MonoBehaviour
 
     }
 
-    void EndGame(){
+    public void EndGame(){
         
     }
 
