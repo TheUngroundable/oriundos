@@ -20,8 +20,7 @@ public class AudioManager : MonoBehaviour
 
     void Start(){
         audioSource = gameObject.GetComponent<AudioSource>();
-        audioSource.clip = intro;
-        audioSource.Play();
+        PlaySound(intro);
     }
 
     private static AudioClip GetRandomAudioClip(AudioClip[] audioClips)
