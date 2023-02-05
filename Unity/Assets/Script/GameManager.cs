@@ -41,6 +41,7 @@ public class GameManager : MonoBehaviour
     public void CheckLoose()
     {
 
+        // DOBBIAMO CONSIDERARE LA LUNGHEZZA DEI PLAYER CHE HANNO GAMEOBJECT ACTIVE
         playerAlive = players.Length;
         playerAlive --;
         if(playerAlive==1)
