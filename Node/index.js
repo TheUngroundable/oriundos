@@ -58,7 +58,7 @@ wss.on('connection', function connection(ws) {
                 }
 
                 ws.send(JSON.stringify(data))
-                console.log("Player "+playerNumber+" has joined the room")
+                console.log("Player " + playerNumber + " has joined the room")
 
 
                 const unity = room.unity
@@ -116,11 +116,12 @@ wss.on('connection', function connection(ws) {
             rooms[json.roomNumber].players.forEach(player => player.ws.send(encodedMessage))
         }
 
-        if (rooms[json.roomNumber]) {
+        if (rooms[json.roomNumber] ) {
             const room = rooms[json.roomNumber]
             const allPlayersAreReady = room.players.length > 0 && room.players.every(player => player.isReady)
-            console.log("All players are ready: "+allPlayersAreReady)
-            if (allPlayersAreReady && room) {
+            console.log("All players are ready: " + allPlayersAreReady)
+            if (allPlayersAreReady && room && !room.isPlaying) {
+                room.isPlaying = true
                 const message = {
                     id: -1,
                     command: COMMANDS.STARTED,

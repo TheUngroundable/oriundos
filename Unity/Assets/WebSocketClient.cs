@@ -31,7 +31,7 @@ public class WebSocketClient : MonoBehaviour
     public AudioManager audioManager;
     public List<float> playerDirections = new List<float>();
 
-    private bool playGameStartedMusic;
+    private bool gameMusicIsPlaying;
 
     private void Start()
     {
@@ -55,13 +55,13 @@ public class WebSocketClient : MonoBehaviour
     {
         ws = new WebSocket(serverIp);
         ws.Connect();
-        Debug.Log("Connecting to server");
+        //Debug.Log("Connecting to server");
 
         roomNumber = Random.Range(0, 9999);
         roomNumberText.text = roomNumberLabel+roomNumber.ToString();
 
         SendMessage("JOINED", 1);
-        Debug.Log("I have joined");
+        //Debug.Log("I have joined");
 
         ws.OnMessage += (sender, e) =>
         {
@@ -73,21 +73,21 @@ public class WebSocketClient : MonoBehaviour
             if(playerInfo.command.ToString() == "STARTED"){
                 if(playerInfo.value == 1f){
                     isPlaying = true;
-                    playGameStartedMusic = true;
                     Debug.Log("Game has started");
+                    gameMusicIsPlaying=true;
                 } else if(playerInfo.value == 0f){
                     isPlaying = false;
                 }
             }
             if(playerInfo.command.ToString() == "JOINED"){
-                Debug.Log("Player Joined");
+                //Debug.Log("Player Joined");
                 playerDirections.Add(0);
                 if(playerInfo.id != -1){
                     numberOfPlayersInRoom++;
                 } else {
                     numberOfPlayersInRoom++;
                 }
-                Debug.Log("There are "+numberOfPlayersInRoom+" people in the room");
+                //Debug.Log("There are "+numberOfPlayersInRoom+" people in the room");
             }
             
         };
@@ -114,13 +114,10 @@ public class WebSocketClient : MonoBehaviour
         if(!isPlaying) {
             return;
         }
-
-        if(playGameStartedMusic == true){
-            playGameStartedMusic = false;
+        if(gameMusicIsPlaying){
+            gameMusicIsPlaying = false;
             audioManager.StartGame();
         }
-
-
 
         foreach(PlayerManager player in gameManager.players) {
             if(player.gameObject.activeSelf){

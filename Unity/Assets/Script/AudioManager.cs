@@ -12,7 +12,7 @@ public class AudioManager : MonoBehaviour
 
     public AudioClip[] rockAudioClips;
 
-    public AudioClip[] randomGrowAudioClip;
+    public AudioClip[] growAudioClips;
     public AudioClip[] powerUpAudioClips;
 
 
@@ -31,7 +31,6 @@ public class AudioManager : MonoBehaviour
 
     public void StartGame(){
         audioSource.Stop();
-        Debug.Log("Playing playing");
         PlaySound(playing);
     }
 
@@ -46,7 +45,7 @@ public class AudioManager : MonoBehaviour
     }
 
     public void PlayGrow(){
-        AudioClip randomGrowAudioClip = GetRandomAudioClip(rockAudioClips);
+        AudioClip randomGrowAudioClip = GetRandomAudioClip(growAudioClips);
         PlaySound(randomGrowAudioClip);
     }
 
