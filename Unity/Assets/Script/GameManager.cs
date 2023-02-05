@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviour
             foreach(PlayerManager pm in players)
             {
                 if(pm.isAlive){
-                    webSocketClient.EndGame()
+                    webSocketClient.EndGame();
                     Debug.Log("VINCE SOLO UNOI"+pm.transform.name);      
                 }
             }
