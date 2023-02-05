@@ -8,17 +8,21 @@ export default defineComponent({
   },
   data(){
     return {
-      isInLobby: false
+      isInLobby: false,
+      roomNumber: ""
     }
   }
 })
 </script>
 
 <template>
-  <button v-if="!isInLobby" @click="isInLobby = true">
-    Enter Lobby
-  </button>
-  <in-game v-else />
+  <template v-if="!isInLobby">
+    <button @click="isInLobby = true">
+      Enter Lobby
+    </button>
+    <input type="text" v-model="roomNumber" />
+  </template>
+  <in-game v-else :roomNumber="roomNumber" />
 </template>
 
 <style scoped>
