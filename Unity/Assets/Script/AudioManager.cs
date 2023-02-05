@@ -6,6 +6,7 @@ public class AudioManager : MonoBehaviour
 {
 
     public AudioClip intro;
+    public AudioClip playing;
 
     private AudioSource audioSource;
 
@@ -27,6 +28,12 @@ public class AudioManager : MonoBehaviour
     {
         return audioClips[(int)(Random.Range(0f, 10.0f) % audioClips.Length)];
     } 
+
+    public void StartGame(){
+        audioSource.Stop();
+        Debug.Log("Playing playing");
+        PlaySound(playing);
+    }
 
     public void PlayRockHit(){
         AudioClip randomRockAudioClip = GetRandomAudioClip(rockAudioClips);

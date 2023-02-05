@@ -28,9 +28,15 @@ public class WebSocketClient : MonoBehaviour
 
     public string serverIp = "ws://192.168.1.191:8080";
 
+    public AudioManager audioManager;
     public List<float> playerDirections = new List<float>();
+
+    private bool playGameStartedMusic;
+
     private void Start()
     {
+        audioManager = GameObject.FindObjectOfType<AudioManager>();
+
         gameManager = GameObject.FindObjectOfType<GameManager>();
         Invoke("Starter",2f);
     }
@@ -67,10 +73,10 @@ public class WebSocketClient : MonoBehaviour
             if(playerInfo.command.ToString() == "STARTED"){
                 if(playerInfo.value == 1f){
                     isPlaying = true;
+                    playGameStartedMusic = true;
                     Debug.Log("Game has started");
                 } else if(playerInfo.value == 0f){
                     isPlaying = false;
-                    Debug.Log("Game has stopped");
                 }
             }
             if(playerInfo.command.ToString() == "JOINED"){
@@ -109,12 +115,17 @@ public class WebSocketClient : MonoBehaviour
             return;
         }
 
+        if(playGameStartedMusic == true){
+            playGameStartedMusic = false;
+            audioManager.StartGame();
+        }
+
+
+
         foreach(PlayerManager player in gameManager.players) {
             if(player.gameObject.activeSelf){
-                Debug.Log("Player "+player.PlayerID+" is active");
                 float direction = playerDirections[player.PlayerID];
                 if(player.direction != direction){
-                    Debug.Log("Player "+player.PlayerID+" is moving to "+direction);
                     player.SetDirection(direction);
                 }
             }
