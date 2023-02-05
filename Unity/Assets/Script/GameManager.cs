@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
     public PlayerManager[] players;
     public CameraMovement cam;
     private WebSocketClient wsc;
-
+    public bool isDebug;
     void Start()
     {
         wsc = GameObject.FindObjectOfType<WebSocketClient>();
@@ -17,13 +17,22 @@ public class GameManager : MonoBehaviour
 
     public void AddPieceToPlayer()
     {
-        if(wsc.isPlaying)
+        if(wsc.isPlaying&&!isDebug)
         {
             foreach(PlayerManager pm in players)
                 pm.AddPieceToRoot();
             
             cam.AddMovement();
         }
+        else
+        {
+            foreach(PlayerManager pm in players)
+                pm.AddPieceToRoot();
+            
+            cam.AddMovement();
+        }
+
+
 
         
     }

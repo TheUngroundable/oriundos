@@ -9,9 +9,10 @@ public class PlayerManager : MonoBehaviour
    public int pieces;
    public List<RootManager> allRoots = new List<RootManager>();
    public float direction; // da -1 a 1
-  
+   public bool isDebug;
 
     public void SetDirection(float newDirection){
+        if(!isDebug)
         direction = newDirection;
     }
 
