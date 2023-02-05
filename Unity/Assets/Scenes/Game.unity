@@ -648,6 +648,8 @@ MonoBehaviour:
   allRoots:
   - {fileID: 227231527}
   direction: 0
+  isDebug: 0
+  isAlive: 1
 --- !u!50 &161549690
 Rigidbody2D:
   serializedVersion: 4
@@ -4686,6 +4688,8 @@ MonoBehaviour:
   allRoots:
   - {fileID: 641738845}
   direction: 0
+  isDebug: 0
+  isAlive: 1
 --- !u!4 &1425359555
 Transform:
   m_ObjectHideFlags: 0
@@ -5397,7 +5401,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1537466864}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 31ccf4d9747f0f64081e6ec3d8d04b0a, type: 3}
   m_Name: 

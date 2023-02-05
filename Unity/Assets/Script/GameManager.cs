@@ -8,11 +8,14 @@ public class GameManager : MonoBehaviour
     public CameraMovement cam;
     private WebSocketClient wsc;
     public bool isDebug;
+    private int playerAlive;
+
     void Start()
     {
         wsc = GameObject.FindObjectOfType<WebSocketClient>();
         InvokeRepeating("AddPieceToPlayer",2,0.1f);
         InvokeRepeating("SpeedTime",5,5);
+        
     }
 
     public void AddPieceToPlayer()
@@ -31,12 +34,21 @@ public class GameManager : MonoBehaviour
             
             cam.AddMovement();
         }
-
-
-
-        
     }
 
+    public void CheckLoose()
+    {
+        playerAlive = players.Length;
+        playerAlive --;
+        if(playerAlive==1)
+        {
+            foreach(PlayerManager pm in players)
+            {
+                if(pm.isAlive)
+                    Debug.Log("VINCE SOLO UNOI"+pm.transform.name);      
+            }
+        }
+    }
 
     public void SpeedTime()
     {

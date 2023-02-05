@@ -10,6 +10,14 @@ public class PlayerManager : MonoBehaviour
    public List<RootManager> allRoots = new List<RootManager>();
    public float direction; // da -1 a 1
    public bool isDebug;
+   public bool isAlive = true;
+
+
+   private void Start()
+   {
+        isAlive = true;
+   }
+
 
     public void SetDirection(float newDirection){
         if(!isDebug)
@@ -61,6 +69,10 @@ public class PlayerManager : MonoBehaviour
       allRoots.Remove(rt);
       
       if(allRoots.Count<=0)
-        Debug.Log(transform.name +"HA PERSO ____"+allRoots.Count);
+      {
+         isAlive = false;
+        GameObject.FindObjectOfType<GameManager>().CheckLoose();
+      }
+       
    }
 }
