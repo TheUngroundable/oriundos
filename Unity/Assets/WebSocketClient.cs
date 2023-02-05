@@ -78,7 +78,10 @@ public class WebSocketClient : MonoBehaviour
                 playerDirections.Add(0);
                 if(playerInfo.id != -1){
                     numberOfPlayersInRoom++;
+                } else {
+                    numberOfPlayersInRoom++;
                 }
+                Debug.Log("There are "+numberOfPlayersInRoom+" people in the room");
             }
             
         };
@@ -97,7 +100,7 @@ public class WebSocketClient : MonoBehaviour
         }
         
         foreach(PlayerManager player in gameManager.players) {
-            if(player.PlayerID <= numberOfPlayersInRoom-1){
+            if(player.PlayerID < numberOfPlayersInRoom){
                 player.gameObject.SetActive(true);
             }
         }
@@ -106,8 +109,9 @@ public class WebSocketClient : MonoBehaviour
             return;
         }
 
-        foreach(PlayerManager player in gameManager.players) {  
+        foreach(PlayerManager player in gameManager.players) {
             if(player.gameObject.activeSelf){
+                Debug.Log("Player "+player.PlayerID+" is active");
                 float direction = playerDirections[player.PlayerID];
                 if(player.direction != direction){
                     Debug.Log("Player "+player.PlayerID+" is moving to "+direction);

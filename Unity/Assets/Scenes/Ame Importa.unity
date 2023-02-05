@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.2257134, b: 0.30692226, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3286,12 +3286,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31ccf4d9747f0f64081e6ec3d8d04b0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player1: {fileID: 161549689}
-  player2: {fileID: 1425359554}
+  gameManager: {fileID: 0}
   isPlaying: 0
-  numberOfPlayers: 0
+  numberOfPlayersInRoom: 0
   roomNumberText: {fileID: 1894204869}
-  directions: []
+  serverIp: ws://192.168.1.191:8080
+  playerDirections: []
 --- !u!1 &224271411
 GameObject:
   m_ObjectHideFlags: 0
@@ -21953,7 +21953,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a480c4cdf2966942aa7a96d273f5906, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerID: 0
+  PlayerID: 1
   pieces: 0
   allRoots:
   - {fileID: 641738845}
