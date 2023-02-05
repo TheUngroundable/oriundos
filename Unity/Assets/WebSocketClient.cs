@@ -77,6 +77,10 @@ public class WebSocketClient : MonoBehaviour
                     Debug.Log("Game has stopped");
                 }
             }
+            if(playerInfo.command.ToString() == "JOINED"){
+                //DO STUFF
+            }
+            
         };
 
     }
