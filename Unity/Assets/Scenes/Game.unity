@@ -5378,7 +5378,7 @@ MonoBehaviour:
   - {fileID: 161549689}
   - {fileID: 1425359554}
   cam: {fileID: 961739754}
-  isDebug: 1
+  isDebug: 0
 --- !u!4 &1537466866
 Transform:
   m_ObjectHideFlags: 0
@@ -5410,6 +5410,7 @@ MonoBehaviour:
   player2: {fileID: 1425359554}
   isPlaying: 0
   numberOfPlayers: 0
+  roomNumberText: {fileID: 0}
   directions: []
 --- !u!1 &1668211821
 GameObject:

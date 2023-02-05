@@ -27,7 +27,9 @@ public class GameManager : MonoBehaviour
             
             cam.AddMovement();
         }
-        else
+        
+        
+        if(isDebug)
         {
             foreach(PlayerManager pm in players)
                 pm.AddPieceToRoot();
