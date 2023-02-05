@@ -40,13 +40,14 @@ public class GameManager : MonoBehaviour
 
     public void CheckLoose()
     {
-
+        // QUI BISOGNA CONSIDERARE LA LUNGEHZZA DEI PLAYERS CHE SONO ATTIVI
         playerAlive = players.Length;
         playerAlive --;
         if(playerAlive==1)
         {
             foreach(PlayerManager pm in players)
             {
+                
                 if(pm.isAlive && pm.gameObject.activeSelf){
                     wsc.EndGame();
                     Time.timeScale = 0;
