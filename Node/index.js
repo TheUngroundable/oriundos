@@ -3,71 +3,91 @@ const wss = new WebSocket.Server({ port: 8080 }, () => {
     console.log('server started')
 })
 
-const CLIENTS = []
-let unityClient = undefined
+const rooms = {}
 
 const numberOfPlayers = 2
-let numberOfReady = 0
-
 
 wss.on('connection', function connection(ws) {
 
     const data = {
-        id: unityClient ? CLIENTS.length : 0,
-        command: "CONNECTION"
+        command: "CONNECTION",
     }
-
-    CLIENTS.push(ws);
     
     ws.send(JSON.stringify(data))
-    
-    if(!unityClient){
-        unityClient = ws
-    }
-
-    
 
     ws.on('message', (data)=>{
         const json = JSON.parse(data)
-        console.log(json)
+
         if(json.command === 'JOINED'){
-            if(json.type === 'UNITY'){
-                unityClient = ws
-                console.log("Unity has joined the game")
+            if(json.type === 'UNITY' && !rooms[json.value]){
+                const room = {
+                    unity: ws,
+                    players: [],
+                    roomNumber: json.roomNumber,
+                    numberOfReady: 0,
+                    maxPlayers: numberOfPlayers,
+                }
+                rooms[json.roomNumber] = room
+                console.log("Unity has created a game for room "+json.roomNumber)
             } else if(json.type === 'PLAYER'){
+                console.log(json.roomNumber)
+                let playerNumber = rooms[json.roomNumber].players.length
+                playerNumber++;
+                const player = {
+                    id: playerNumber,
+                    ws,
+                }
+                rooms[json.roomNumber].players.push(player)
+
+                const data = {
+                    id: playerNumber,
+                    command: "CONNECTION",
+                    roomNumber: json.roomNumber,
+                }
+
+                ws.send(JSON.stringify(data))            
                 console.log("Player has joined the room")
             }
         }
 
         if(json.command === 'MOVEMENT'){
-            console.log("Player "+json.id+" has moved to "+json.value)
+
+            console.log(json.roomNumber+" | Player "+json.id+" has moved to "+json.value)
             const message = {
                 id: json.id,
                 command: json.command,
-                value: json.value
+                value: json.value,
+                roomNumber: json.roomNumber
             }
-            unityClient.send(JSON.stringify(message))
+            const unityWs = rooms[json.roomNumber].unity
+            unityWs.send(JSON.stringify(message))
         }
 
         if(json.command === 'READY'){
+
+            const room = rooms[json.roomNumber]
+
             if(json.value){
-                numberOfReady++;
+                room.numberOfReady++;
                 console.log("Player "+json.id+" is ready")
             } else {
-                numberOfReady--;
+                room.numberOfReady--;
                 console.log("Player "+json.id+" is not ready")
             }
         }
 
         
 
-        if(numberOfReady == numberOfPlayers+1){
+        if(rooms[json.roomNumber] && rooms[json.roomNumber].numberOfReady == rooms[json.roomNumber].maxPlayers){
             const message = {
                 id: -1,
                 command: 'STARTED',
-                value: 1
+                value: 1,
+                roomNumber: json.roomNumber
             }
-            CLIENTS.forEach(client => client.send(JSON.stringify(message)))
+            const encodedMessage = JSON.stringify(message)
+            rooms[json.roomNumber].players.forEach(player => player.ws.send(encodedMessage))
+            rooms[json.roomNumber].unity.send(encodedMessage)
             console.log("Game has started")
         }
     })

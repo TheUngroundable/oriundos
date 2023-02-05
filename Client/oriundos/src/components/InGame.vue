@@ -3,6 +3,12 @@ import { defineComponent } from 'vue'
 import OriundosWebsocket from '../libs/OriundosWebsocket.ts'
 export default defineComponent({
     name: 'in-game',
+    props: {
+        roomNumber: {
+            type: String,
+            default: ''
+        }
+    },
     data() {
         return {
             connection: undefined,
@@ -67,7 +73,8 @@ export default defineComponent({
                 id: this.playerNumber,
                 command,
                 value,
-                type: "PLAYER"
+                type: "PLAYER",
+                roomNumber: this.roomNumber
             };
             console.log("Player "+this.playerNumber+" said "+message);
             this.connection.send(JSON.stringify(message));
@@ -79,7 +86,7 @@ export default defineComponent({
 <template>
     <div>
         <h1>Oriundos Controller</h1>
-        <h2>You are Player {{ playerNumber }}</h2>
+        <h2>You are Player {{ playerNumber }} in room number {{ roomNumber }}</h2>
         <hr />
         <h3 v-if="ready">Ready</h3>
         <h3 v-if="isPlaying">Game is playing</h3>

@@ -2,12 +2,15 @@ using UnityEngine;
 using WebSocketSharp;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
+ 
 [System.Serializable]
 class PlayerInfo {
     public float id;
     public string command;
     public float value;
     public string type;
+    public int roomNumber;
 }
 
 public class WebSocketClient : MonoBehaviour
@@ -22,6 +25,10 @@ public class WebSocketClient : MonoBehaviour
     public bool isPlaying;
     public float numberOfPlayers;
 
+    public Text roomNumberText;
+    private string roomNumberLabel = "ROOM CODE: ";
+    private int roomNumber;
+
     public List<float> directions = new List<float>();
     private void Start()
     {
@@ -34,6 +41,7 @@ public class WebSocketClient : MonoBehaviour
         message.command = command;
         message.value = value;
         message.type = "UNITY";
+        message.roomNumber = roomNumber;
         ws.Send(JsonUtility.ToJson(message));
     }
 
@@ -43,13 +51,11 @@ public class WebSocketClient : MonoBehaviour
         ws.Connect();
         Debug.Log("Connecting to server");
 
+        roomNumber = Random.Range(0, 9999);
+        roomNumberText.text = roomNumberLabel+roomNumber.ToString();
 
         SendMessage("JOINED", 1);
         Debug.Log("I have joined");
-
-        SendMessage("READY", 1);
-        Debug.Log("I am ready");
-
 
         ws.OnMessage += (sender, e) =>
         {
