@@ -29,7 +29,7 @@ public class WebSocketClient : MonoBehaviour
     private string protocol = "ws://";
     private string port = "8080";
 
-    public string serverIp = "192.168.1.191";
+    private string serverIp = "192.168.1.191";
 
     public AudioManager audioManager;
     public List<float> playerDirections = new List<float>();
