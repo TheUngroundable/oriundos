@@ -1,6 +1,6 @@
 class OriundosWebsocket {
-    createWebsocket = () => {
-        return new WebSocket("ws://192.168.1.191:8080");
+    createWebsocket = (serverIp: string) => {
+        return new WebSocket(serverIp);
     }
 
     connect = (connection: WebSocket, onMessage: () => void, onOpen: () => void) => {

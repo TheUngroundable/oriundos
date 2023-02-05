@@ -1,6 +1,9 @@
 <script>
 import { defineComponent } from 'vue'
 import OriundosWebsocket from '../libs/OriundosWebsocket.ts'
+
+const SERVER_IP = "ws://192.168.1.191:8080"
+
 export default defineComponent({
     name: 'in-game',
     props: {
@@ -31,7 +34,7 @@ export default defineComponent({
     },
     methods: {
         connect() {
-            this.connection = OriundosWebsocket.createWebsocket()
+            this.connection = OriundosWebsocket.createWebsocket(SERVER_IP)
             OriundosWebsocket.connect(this.connection, this.onMessage, this.onOpen)
         },
         onMessage() {
@@ -94,7 +97,7 @@ export default defineComponent({
         <h3 v-if="isPlaying && !finished">Game is playing</h3>
         <h3 v-if="finished">You Suck</h3>
         <button v-if="!isPlaying" @click="readyHandler">I'm Ready</button>
-        <input type="range" min="-1" max="1" step="0.1" :disabled="!isPlaying" v-model="direction">
+        <input type="range" min="-1" max="1" step="0.1" :disabled="!isPlaying || finished" v-model="direction">
 
     </div>
 </template>

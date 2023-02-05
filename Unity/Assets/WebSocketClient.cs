@@ -6,7 +6,7 @@ using UnityEngine.UI;
  
 [System.Serializable]
 class PlayerInfo {
-    public float id;
+    public int id;
     public string command;
     public float value;
     public string type;
@@ -16,28 +16,28 @@ class PlayerInfo {
 public class WebSocketClient : MonoBehaviour
 {
     WebSocket ws;
-    public PlayerManager player1;
-    public PlayerManager player2;
 
-    private float player1Direction;
-    private float player2Direction;
+    public GameManager gameManager;
 
     public bool isPlaying;
-    public float numberOfPlayers;
+    public float numberOfPlayersInRoom;
 
     public Text roomNumberText;
     private string roomNumberLabel = "ROOM CODE: ";
     private int roomNumber;
 
-    public List<float> directions = new List<float>();
+    public string serverIp = "ws://192.168.1.191:8080";
+
+    public List<float> playerDirections = new List<float>();
     private void Start()
     {
+        gameManager = GameObject.FindObjectOfType<GameManager>();
         Invoke("Starter",2f);
     }
 
     private void SendMessage(string command, float value){
         PlayerInfo message= new PlayerInfo();
-        message.id = 0;
+        message.id = -1;
         message.command = command;
         message.value = value;
         message.type = "UNITY";
@@ -47,7 +47,7 @@ public class WebSocketClient : MonoBehaviour
 
     void Starter()
     {
-        ws = new WebSocket("ws://192.168.1.191:8080");
+        ws = new WebSocket(serverIp);
         ws.Connect();
         Debug.Log("Connecting to server");
 
@@ -62,11 +62,7 @@ public class WebSocketClient : MonoBehaviour
             PlayerInfo playerInfo = JsonUtility.FromJson<PlayerInfo>(""+e.Data);
 
             if(playerInfo.command.ToString() == "MOVEMENT"){
-                if(playerInfo.id == 1f && player1) {
-                    player1Direction = playerInfo.value;
-                } else if(playerInfo.id == 2f){
-                    player2Direction = playerInfo.value;
-                }
+                playerDirections[playerInfo.id] = playerInfo.value;
             }
             if(playerInfo.command.ToString() == "STARTED"){
                 if(playerInfo.value == 1f){
@@ -78,7 +74,11 @@ public class WebSocketClient : MonoBehaviour
                 }
             }
             if(playerInfo.command.ToString() == "JOINED"){
-                //DO STUFF
+                Debug.Log("Player Joined");
+                playerDirections.Add(0);
+                if(playerInfo.id != -1){
+                    numberOfPlayersInRoom++;
+                }
             }
             
         };
@@ -91,15 +91,17 @@ public class WebSocketClient : MonoBehaviour
 
     private void Update()
     {
-        if(ws == null)
+        if(ws == null || playerDirections.Count < gameManager.players.Length)
         {
             return;
         }
-        if(player1.GetComponent<PlayerManager>().direction != player1Direction){
-            player1.GetComponent<PlayerManager>().SetDirection(player1Direction);
-        }
-        if(player2.GetComponent<PlayerManager>().direction != player2Direction){
-            player2.GetComponent<PlayerManager>().SetDirection(player2Direction);
+
+        foreach(PlayerManager player in gameManager.players) {  
+            Debug.Log(player.PlayerID);
+            float direction = playerDirections[player.PlayerID];
+            if(player.direction != direction){
+                player.SetDirection(direction);
+            }
         }
     }
 }
