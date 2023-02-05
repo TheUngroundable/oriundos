@@ -93,8 +93,9 @@ export default defineComponent({
         <h3 v-if="ready">Ready</h3>
         <h3 v-if="isPlaying && !finished">Game is playing</h3>
         <h3 v-if="finished">You Suck</h3>
-        <input type="range" min="-1" max="1" step="0.1" :disabled="!isPlaying" v-model="direction">
         <button v-if="!isPlaying" @click="readyHandler">I'm Ready</button>
+        <input type="range" min="-1" max="1" step="0.1" :disabled="!isPlaying" v-model="direction">
+
     </div>
 </template>
 

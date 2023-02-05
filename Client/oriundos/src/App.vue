@@ -17,10 +17,11 @@ export default defineComponent({
 
 <template>
   <template v-if="!isInLobby">
+    <input type="text" v-model="roomNumber" />
+
     <button @click="isInLobby = true">
       Enter Lobby
     </button>
-    <input type="text" v-model="roomNumber" />
   </template>
   <in-game v-else :roomNumber="roomNumber" />
 </template>

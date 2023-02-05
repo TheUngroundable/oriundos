@@ -26,6 +26,7 @@ wss.on('connection', function connection(ws) {
                     roomNumber: json.roomNumber,
                     numberOfReady: 0,
                     maxPlayers: numberOfPlayers,
+                    isPlaying: false,
                 }
                 rooms[json.roomNumber] = room
                 console.log("Unity has created a game for room "+json.roomNumber)
@@ -50,14 +51,15 @@ wss.on('connection', function connection(ws) {
             }
         }
 
-        if(json.command === 'MOVEMENT'){
+        if(json.command === 'MOVEMENT' && json.isPlaying){
 
             console.log(json.roomNumber+" | Player "+json.id+" has moved to "+json.value)
             const message = {
                 id: json.id,
                 command: json.command,
                 value: json.value,
-                roomNumber: json.roomNumber
+                roomNumber: json.roomNumber,
+                isPlaying: true
             }
             const unityWs = rooms[json.roomNumber].unity
             unityWs.send(JSON.stringify(message))
@@ -83,7 +85,8 @@ wss.on('connection', function connection(ws) {
                 id: json.id,
                 command: json.command,
                 value: json.value,
-                roomNumber: json.roomNumber
+                roomNumber: json.roomNumber,
+                isPlaying: false
             }
             const encodedMessage = JSON.stringify(message)
             rooms[json.roomNumber].players.forEach(player => player.ws.send(encodedMessage))
