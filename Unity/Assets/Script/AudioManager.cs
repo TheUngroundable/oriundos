@@ -5,6 +5,8 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
 
+    public AudioClip intro;
+
     private AudioSource audioSource;
 
     public AudioClip[] rockAudioClips;
@@ -12,10 +14,14 @@ public class AudioManager : MonoBehaviour
     public AudioClip[] randomGrowAudioClip;
     public AudioClip[] powerUpAudioClips;
 
-    public float volume;
+
+
+    public float volume = 1;
 
     void Start(){
         audioSource = gameObject.GetComponent<AudioSource>();
+        audioSource.clip = intro;
+        audioSource.Play();
     }
 
     private static AudioClip GetRandomAudioClip(AudioClip[] audioClips)
