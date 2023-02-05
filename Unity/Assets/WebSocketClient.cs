@@ -107,10 +107,10 @@ public class WebSocketClient : MonoBehaviour
         }
 
         foreach(PlayerManager player in gameManager.players) {  
-            Debug.Log(player.PlayerID);
             if(player.gameObject.activeSelf){
                 float direction = playerDirections[player.PlayerID];
                 if(player.direction != direction){
+                    Debug.Log("Player "+player.PlayerID+" is moving to "+direction);
                     player.SetDirection(direction);
                 }
             }

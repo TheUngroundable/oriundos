@@ -11,22 +11,24 @@ const COMMANDS = {
     CONNECTION: "CONNECTION",
     JOINED: 'JOINED',
     MOVEMENT: 'MOVEMENT',
-    READY: "READY"
+    READY: "READY",
+    FINISHED: 'FINISHED',
+    STARTED: 'STARTED'
 }
 
 wss.on('connection', function connection(ws) {
 
     const data = {
-        command: "CONNECTION",
+        command: COMMANDS.CONNECTION,
     }
-    
+
     ws.send(JSON.stringify(data))
 
-    ws.on('message', (data)=>{
+    ws.on('message', (data) => {
         const json = JSON.parse(data)
 
-        if(json.command === 'JOINED'){
-            if(json.type === 'UNITY' && !rooms[json.value]){
+        if (json.command === COMMANDS.JOINED) {
+            if (json.type === 'UNITY' && !rooms[json.roomNumber]) {
                 const room = {
                     unity: ws,
                     players: [],
@@ -36,41 +38,44 @@ wss.on('connection', function connection(ws) {
                     isPlaying: false,
                 }
                 rooms[json.roomNumber] = room
-                console.log("Unity has created a game for room "+json.roomNumber)
-            } else if(json.type === 'PLAYER'){
+                console.log("Unity has created a game for room " + json.roomNumber)
+            } else if (json.type === 'PLAYER' && rooms[json.roomNumber]) {
                 console.log(json.roomNumber)
                 const room = rooms[json.roomNumber]
                 const playerNumber = room.players.length
                 const player = {
                     id: playerNumber,
                     ws,
+                    isReady: false,
                 }
                 room.players.push(player)
 
                 const data = {
                     id: playerNumber,
-                    command: "CONNECTION",
+                    command: COMMANDS.CONNECTION,
                     roomNumber: json.roomNumber,
+                    isPlaying: false,
                 }
 
                 ws.send(JSON.stringify(data))
-                console.log("Player has joined the room")
+                console.log("Player "+playerNumber+" has joined the room")
 
 
                 const unity = room.unity
                 const userJoinedNotify = {
                     id: playerNumber,
-                    command: "JOINED",
+                    command: COMMANDS.JOINED,
                     roomNumber: json.roomNumber,
                     value: 1,
+                    isPlaying: false,
                 }
                 unity.send(JSON.stringify(userJoinedNotify))
             }
         }
 
-        if(json.command === 'MOVEMENT'){
+        if (json.command === COMMANDS.MOVEMENT) {
 
-            console.log(json.roomNumber+" | Player "+json.id+" has moved to "+json.value)
+            console.log(json.roomNumber + " | Player " + json.id + " has moved to " + json.value)
             const message = {
                 id: json.id,
                 command: json.command,
@@ -82,22 +87,23 @@ wss.on('connection', function connection(ws) {
             unityWs.send(JSON.stringify(message))
         }
 
-        if(json.command === 'READY'){
+        if (json.command === COMMANDS.READY) {
 
             const room = rooms[json.roomNumber]
+            const player = room.players.find(player => player.id === json.id)
 
-            if(json.value){
-                room.numberOfReady++;
-                console.log("Player "+json.id+" is ready")
+            player.isReady = json.value
+
+            if (json.value) {
+                console.log("Player " + json.id + " is ready")
             } else {
-                room.numberOfReady--;
-                console.log("Player "+json.id+" is not ready")
+                console.log("Player " + json.id + " is not ready")
             }
         }
 
-        if(json.command === 'FINISHED'){
+        if (json.command === COMMANDS.FINISHED) {
             const room = rooms[json.roomNumber]
-            room.isPlaying = false            
+            room.isPlaying = false
             const message = {
                 id: json.id,
                 command: json.command,
@@ -110,23 +116,29 @@ wss.on('connection', function connection(ws) {
             rooms[json.roomNumber].players.forEach(player => player.ws.send(encodedMessage))
         }
 
-        if(rooms[json.roomNumber] && rooms[json.roomNumber].numberOfReady == rooms[json.roomNumber].maxPlayers){
+        if (rooms[json.roomNumber]) {
             const room = rooms[json.roomNumber]
-            const message = {
-                id: -1,
-                command: 'STARTED',
-                value: 1,
-                roomNumber: json.roomNumber,
-                isPlaying: true,
+            const allPlayersAreReady = room.players.length > 0 && room.players.every(player => player.isReady)
+            console.log("All players are ready: "+allPlayersAreReady)
+            if (allPlayersAreReady && room) {
+                const message = {
+                    id: -1,
+                    command: COMMANDS.STARTED,
+                    value: 1,
+                    roomNumber: json.roomNumber,
+                    isPlaying: true,
+                }
+                room.isPlaying = true
+                const encodedMessage = JSON.stringify(message)
+                room.players.forEach(player => player.ws.send(encodedMessage))
+                room.unity.send(encodedMessage)
+                console.log("Game has started")
             }
-            room.isPlaying = true
-            const encodedMessage = JSON.stringify(message)
-            room.players.forEach(player => player.ws.send(encodedMessage))
-            room.unity.send(encodedMessage)
-            console.log("Game has started")
         }
+
+
     })
 })
 wss.on('listening', () => {
-    console.log('listening on 8080')
+    console.log('Node server started on on 8080')
 })
