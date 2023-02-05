@@ -9,14 +9,15 @@ public class RootManager : MonoBehaviour
     public bool isNegative;
     private bool isAlive = true;
 
-    private void Start()
-    {
-        lastPiece= transform.GetChild(0).gameObject;
+    private void Update(){
+        if(!lastPiece && this.gameObject.activeSelf){
+            lastPiece= transform.GetChild(0).gameObject;
+        }
     }
 
    public void AddPiece(float direction)
    {
-        if(isAlive)
+        if(isAlive && lastPiece)
         {
             GameObject curPiece = Instantiate(lastPiece,Vector3.zero,Quaternion.identity,transform);
             if(isNegative)

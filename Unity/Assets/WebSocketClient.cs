@@ -91,16 +91,28 @@ public class WebSocketClient : MonoBehaviour
 
     private void Update()
     {
-        if(ws == null || playerDirections.Count < gameManager.players.Length)
+        if(ws == null)
         {
+            return;
+        }
+        
+        foreach(PlayerManager player in gameManager.players) {
+            if(player.PlayerID <= numberOfPlayersInRoom-1){
+                player.gameObject.SetActive(true);
+            }
+        }
+
+        if(!isPlaying) {
             return;
         }
 
         foreach(PlayerManager player in gameManager.players) {  
             Debug.Log(player.PlayerID);
-            float direction = playerDirections[player.PlayerID];
-            if(player.direction != direction){
-                player.SetDirection(direction);
+            if(player.gameObject.activeSelf){
+                float direction = playerDirections[player.PlayerID];
+                if(player.direction != direction){
+                    player.SetDirection(direction);
+                }
             }
         }
     }
