@@ -7,7 +7,22 @@ A brief description of what this project does and who it's for
 
 
 ## IMPORTANT
-You must retrieve your private ip address before you start playing
+
+You MUST have Node.js installed
+
+Download NVM from this link https://github.com/coreybutler/nvm-windows/releases and once you have downloaded it, open terminal and run
+
+```bash
+    nvm i 19.6.9
+    nvm use 19.6.9
+
+    node -v 
+```
+
+if no error is shown, you are good to go!
+
+
+Now you must retrieve your private ip address before you start playing
 
 Run this command in terminal to find your private ip address
 ```bash
