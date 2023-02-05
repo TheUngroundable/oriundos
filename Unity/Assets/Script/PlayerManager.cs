@@ -12,10 +12,12 @@ public class PlayerManager : MonoBehaviour
    public bool isDebug;
    public bool isAlive = true;
 
+    public AudioManager audioManager;
 
    private void Start()
    {
         isAlive = true;
+       audioManager = GameObject.FindObjectOfType<AudioManager>();
    }
 
 
@@ -39,6 +41,7 @@ public class PlayerManager : MonoBehaviour
         int random = Random.Range(0,10);
         newRoot.isNegative = random % 2 == 0;
         allRoots.Add(newRoot);
+        audioManager.PlayGrow();
     }
 
     public void AddPieceToRoot()

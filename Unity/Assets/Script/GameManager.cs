@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour
         {
             foreach(PlayerManager pm in players)
             {
-                if(pm.isAlive){
+                if(pm.isAlive && pm.gameObject.activeSelf){
                     wsc.EndGame();
                     Time.timeScale = 0;
                     int score = 0;

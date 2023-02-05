@@ -5,11 +5,14 @@ using UnityEngine;
 public class Obstacle : MonoBehaviour
 {
     private GameObject particle;
+    public AudioManager audioManager;
 
     private void Start()
     {
          particle = GameObject.Find("Particle");
          //particle.SetActive(false);
+        audioManager = GameObject.FindObjectOfType<AudioManager>();
+
     }
 
     void OnTriggerEnter2D(Collider2D col)
@@ -17,9 +20,12 @@ public class Obstacle : MonoBehaviour
         col.transform.parent.GetComponent<RootManager>().GetObstacle();
         Camera.main.GetComponent<CameraShake>().Shake();
         
+        audioManager.PlayRockHit();
+
         //particle
         particle.transform.position = col.transform.position;
         StartCoroutine("ActiveParticle");
+       
        
     }
 
