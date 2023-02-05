@@ -20,11 +20,11 @@ public class RootManager : MonoBehaviour
         {
             GameObject curPiece = Instantiate(lastPiece,Vector3.zero,Quaternion.identity,transform);
             if(isNegative)
-                direction = -direction*Random.Range(0f,1f);
+                direction = -direction*Random.Range(0f,1.5f);
             else
-                direction = direction*Random.Range(0f,1f);
+                direction = direction*Random.Range(0f,1.5f);
                 
-            curPiece.transform.localPosition =  lastPiece.transform.localPosition + new Vector3(direction,-1,0);
+            curPiece.transform.localPosition =  lastPiece.transform.localPosition + new Vector3(direction,Random.Range(0f,-2f),0);
             pieces++;
             
             if(lastPiece.transform.GetSiblingIndex()!=0)

@@ -36,7 +36,8 @@ public class PlayerManager : MonoBehaviour
         newRoot.transform.position = pos;
        
         newRoot = newRoot.GetComponent<RootManager>();
-        newRoot.isNegative = !newRoot.isNegative;
+        int random = Random.Range(0,10);
+        newRoot.isNegative = random % 2 == 0;
         allRoots.Add(newRoot);
     }
 
